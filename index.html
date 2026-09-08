@@ -21,6 +21,8 @@
     --magenta: #FF4FC3; --magenta-dark: #C2318F; --magenta-pale: rgba(255,79,195,0.12);
     --amber: #FFB020; --amber-dark: #C6820A; --amber-pale: rgba(255,176,32,0.12);
     --green: #4CFF6B; --green-dark: #2FCB4C; --green-pale: rgba(76,255,107,0.12);
+    --violet: #8B7CFF; --violet-dark: #5F4FD1; --violet-pale: rgba(139,124,255,0.12);
+    --rose: #FF6F91; --rose-dark: #C23B62; --rose-pale: rgba(255,111,145,0.12);
 
     --gold: #FFC94A;
     --red: #FF4D6A; --red-dark: #C43050; --red-pale: rgba(255,77,106,0.12);
@@ -540,7 +542,7 @@
       <p>Comunidade Àse Ylé Igbo Alaketu · treinamento de ciberdefesa pessoal</p>
     </header>
 
-    <div class="section-label ui">Missões · <span id="missions-done">0</span>/4 concluídas</div>
+    <div class="section-label ui">Missões · <span id="missions-done">0</span>/6 concluídas</div>
     <div class="mission-grid" id="mission-grid"></div>
 
     <footer class="foot">Nenhum dado pessoal é coletado nesta plataforma.<br><button id="btn-reset" style="background:none;border:none;color:var(--muted);text-decoration:underline;cursor:pointer;font-size:12px;padding:8px 0;font-family:inherit;">Resetar progresso</button></footer>
@@ -845,6 +847,122 @@
           explanation: "A regra de ouro contra golpes digitais é: desconfiar de urgência e confirmar por outro canal antes de agir."
         }
       ]
+    },
+    {
+      id: "senhas",
+      title: "Senhas seguras",
+      desc: "Como proteger suas contas",
+      color: "violet", code: "05",
+      icon: 'lock',
+      story: {
+        def: "Uma senha segura é a primeira barreira contra golpistas. Senha fraca é como deixar a porta de casa destrancada.",
+        signs: ["Usar a mesma senha em tudo", "Senha com data de nascimento ou nome", "Nunca trocar a senha, mesmo desconfiando de algo"],
+        protect: "Use senhas longas e diferentes em cada conta, e ative a verificação em duas etapas sempre que possível."
+      },
+      questions: [
+        {
+          q: "Qual dessas é a senha mais segura?",
+          options: [
+            "123456",
+            "nomedapessoa1990",
+            "K7#mvL2!qz9",
+            "senha123"
+          ],
+          correct: 2,
+          explanation: "Senhas seguras misturam letras, números e símbolos, sem seguir um padrão óbvio como datas ou nomes."
+        },
+        {
+          q: "Por que não é recomendado usar a mesma senha em vários sites?",
+          options: [
+            "Porque é mais difícil de lembrar",
+            "Porque se um site vazar, todas as suas contas ficam vulneráveis",
+            "Porque os sites não permitem",
+            "Não tem problema nenhum repetir"
+          ],
+          correct: 1,
+          explanation: "Se uma senha repetida vazar de um site, golpistas testam ela em outras contas suas (banco, e-mail, redes sociais) — é um risco em cadeia."
+        },
+        {
+          q: "O que é a verificação em duas etapas?",
+          options: [
+            "Um segundo e-mail de backup",
+            "Uma confirmação extra, além da senha, geralmente enviada ao celular",
+            "Trocar a senha duas vezes por ano",
+            "Um tipo de vírus"
+          ],
+          correct: 1,
+          explanation: "É uma camada extra de segurança: mesmo que alguém descubra sua senha, ainda precisa de um código enviado ao seu celular pra entrar na conta."
+        },
+        {
+          q: "Onde é mais seguro guardar suas senhas?",
+          options: [
+            "Anotadas num papel visível perto do computador",
+            "Em um aplicativo gerenciador de senhas, ou de forma bem guardada",
+            "Enviadas por WhatsApp para você mesma se lembrar",
+            "Decoradas e nunca anotadas em lugar nenhum"
+          ],
+          correct: 1,
+          explanation: "Gerenciadores de senha guardam tudo de forma protegida. Anotar em papel visível ou mandar por mensagem expõe a senha facilmente."
+        }
+      ]
+    },
+    {
+      id: "privacidade",
+      title: "Privacidade nas redes sociais",
+      desc: "O que evitar compartilhar",
+      color: "rose", code: "06",
+      icon: 'eye',
+      story: {
+        def: "O que você compartilha nas redes sociais pode ser usado por golpistas pra te conhecer e ganhar sua confiança.",
+        signs: ["Postar rotina e localização em tempo real", "Perfil totalmente aberto pra qualquer pessoa ver", "Aceitar pedidos de amizade de desconhecidos"],
+        protect: "Revise as configurações de privacidade e pense duas vezes antes de postar informações pessoais."
+      },
+      questions: [
+        {
+          q: "Por que postar sua localização em tempo real pode ser arriscado?",
+          options: [
+            "Não tem risco nenhum",
+            "Mostra pra qualquer pessoa que sua casa pode estar vazia, por exemplo",
+            "Só é arriscado se você for uma pessoa famosa",
+            "É só uma forma de se divertir"
+          ],
+          correct: 1,
+          explanation: "Compartilhar localização em tempo real pode indicar que você não está em casa, o que é informação valiosa pra quem tem más intenções."
+        },
+        {
+          q: "Qual atitude ajuda a proteger sua privacidade nas redes sociais?",
+          options: [
+            "Deixar o perfil totalmente público",
+            "Aceitar todos os pedidos de amizade",
+            "Revisar quem pode ver suas postagens e dados pessoais",
+            "Postar o dia a dia em tempo real"
+          ],
+          correct: 2,
+          explanation: "Configurar quem pode ver suas informações é uma das formas mais simples e eficazes de reduzir o risco de golpes."
+        },
+        {
+          q: "Um perfil desconhecido pede amizade e começa a puxar assunto sobre sua vida pessoal. O que fazer?",
+          options: [
+            "Aceitar e responder tudo, para ser educada",
+            "Desconfiar e evitar compartilhar informações pessoais com desconhecidos",
+            "Aceitar só se o perfil tiver foto",
+            "Bloquear sem pensar, mesmo que seja alguém conhecido"
+          ],
+          correct: 1,
+          explanation: "Desconhecidos que buscam informações pessoais rapidamente podem estar tentando te conhecer para aplicar um golpe personalizado."
+        },
+        {
+          q: "Que tipo de informação é mais arriscado deixar visível num perfil público?",
+          options: [
+            "Nome de um filme favorito",
+            "Endereço, rotina diária e dados da família",
+            "Cor favorita",
+            "Time de futebol que torce"
+          ],
+          correct: 1,
+          explanation: "Informações como endereço, rotina e dados familiares dão material pra golpistas montarem histórias convincentes contra você ou sua família."
+        }
+      ]
     }
   ];
   var ICONS = {
@@ -852,6 +970,8 @@
     mask: '<circle cx="8.5" cy="12" r="2.3"/><circle cx="15.5" cy="12" r="2.3"/><path d="M3 10c1-3 4-5 9-5s8 2 9 5c-1 1-2 1.5-3 1.7M3 10c1 1 2 1.5 3 1.7M15.5 14.3c-1 1.2-2.2 1.8-3.5 1.8s-2.5-.6-3.5-1.8"/>',
     phone: '<path d="M4 4c0 9 7 16 16 16l2-4-6-2-2 2c-2-1-4-3-5-5l2-2-2-6z"/>',
     chat: '<path d="M4 5h16v11H9l-4 3.5V16H4z"/>',
+    lock: '<rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V7a4 4 0 018 0v4"/>',
+    eye: '<path d="M2 12s3.7-7 10-7 10 7 10 7-3.7 7-10 7-10-7-10-7z"/><circle cx="12" cy="12" r="3"/>',
     warning: '<path d="M12 3.5l9.5 16.5H2.5z"/><path d="M12 9.5v5"/><circle cx="12" cy="17.3" r="0.9" fill="currentColor" stroke="none"/>',
     shieldCheck: '<path d="M12 2l8 4v6c0 5-3.5 8.5-8 10-4.5-1.5-8-5-8-10V6l8-4z"/><path d="M9 12l2 2 4-4"/>'
   };
@@ -864,14 +984,16 @@
     cyan:    { c: "var(--cyan)",    dark: "var(--cyan-dark)",    pale: "var(--cyan-pale)" },
     magenta: { c: "var(--magenta)", dark: "var(--magenta-dark)", pale: "var(--magenta-pale)" },
     amber:   { c: "var(--amber)",   dark: "var(--amber-dark)",   pale: "var(--amber-pale)" },
-    green:   { c: "var(--green)",   dark: "var(--green-dark)",   pale: "var(--green-pale)" }
+    green:   { c: "var(--green)",   dark: "var(--green-dark)",   pale: "var(--green-pale)" },
+    violet:  { c: "var(--violet)",  dark: "var(--violet-dark)",  pale: "var(--violet-pale)" },
+    rose:    { c: "var(--rose)",    dark: "var(--rose-dark)",    pale: "var(--rose-pale)" }
   };
 
   var RANK_RULES = [
     { name: "Curioso Digital", test: function () { return true; } },
     { name: "Abian Digital", test: function (s) { return s.doneCount >= 1; } },
-    { name: "Iyawo Digital", test: function (s) { return s.doneCount >= 2 && s.accuracy >= 0.5; } },
-    { name: "Egbon Digital", test: function (s) { return s.doneCount >= 4 && s.accuracy >= 0.75; } }
+    { name: "Iyawo Digital", test: function (s) { return s.doneCount >= 3 && s.accuracy >= 0.5; } },
+    { name: "Egbon Digital", test: function (s) { return s.doneCount >= 6 && s.accuracy >= 0.75; } }
   ];
 
   var XP_PER_CORRECT = 10;
@@ -921,11 +1043,11 @@
 
   function nextRankHint(s) {
     if (s.doneCount < 1) return "Complete a 1ª missão para virar Abian Digital";
-    if (!(s.doneCount >= 2 && s.accuracy >= 0.5)) {
-      return "Complete 2 missões com 50%+ de acerto para virar Iyawo Digital";
+    if (!(s.doneCount >= 3 && s.accuracy >= 0.5)) {
+      return "Complete 3 missões com 50%+ de acerto para virar Iyawo Digital";
     }
-    if (!(s.doneCount >= 4 && s.accuracy >= 0.75)) {
-      return "Complete as 4 missões com 75%+ de acerto para virar Egbon Digital";
+    if (!(s.doneCount >= 6 && s.accuracy >= 0.75)) {
+      return "Complete as 6 missões com 75%+ de acerto para virar Egbon Digital";
     }
     return "Patente máxima alcançada";
   }
@@ -937,7 +1059,7 @@
     document.getElementById("rank-name").textContent = currentRankName(s);
     document.getElementById("missions-done").textContent = s.doneCount;
 
-    var pct = Math.min(100, Math.round((s.doneCount / 4) * 100));
+    var pct = Math.min(100, Math.round((s.doneCount / 6) * 100));
     document.getElementById("xp-fill").style.width = pct + "%";
     document.getElementById("rank-next").textContent = nextRankHint(s);
   }
