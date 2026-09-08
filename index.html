@@ -1,0 +1,1224 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Rangers Digitais</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@500;600;700&family=Orbitron:wght@700;800&family=Inter:wght@400;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0A0E17;
+    --surface: #121826;
+    --surface-2: #1A2333;
+    --border: #263047;
+    --border-soft: #1D273A;
+    --text: #E7ECF5;
+    --muted: #8B96AC;
+
+    --cyan: #21E6C1; --cyan-dark: #12A78E; --cyan-pale: rgba(33,230,193,0.12);
+    --magenta: #FF4FC3; --magenta-dark: #C2318F; --magenta-pale: rgba(255,79,195,0.12);
+    --amber: #FFB020; --amber-dark: #C6820A; --amber-pale: rgba(255,176,32,0.12);
+    --green: #4CFF6B; --green-dark: #2FCB4C; --green-pale: rgba(76,255,107,0.12);
+
+    --gold: #FFC94A;
+    --red: #FF4D6A; --red-dark: #C43050; --red-pale: rgba(255,77,106,0.12);
+
+    --radius: 14px;
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    margin: 0;
+    background: var(--bg);
+    background-image:
+      repeating-linear-gradient(0deg, rgba(255,255,255,0.015) 0px, rgba(255,255,255,0.015) 1px, transparent 1px, transparent 3px);
+    color: var(--text);
+    font-family: "Inter", -apple-system, BlinkMacSystemFont, sans-serif;
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .ui { font-family: "Rajdhani", sans-serif; font-weight: 700; letter-spacing: 0.02em; }
+  .mono { font-family: "Space Mono", monospace; }
+
+  .wrap { max-width: 560px; margin: 0 auto; padding: 22px 18px 90px; }
+
+  /* ---------- Rank header ---------- */
+  .rank-card {
+    background: linear-gradient(180deg, var(--surface) 0%, var(--surface-2) 100%);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 20px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 22px;
+  }
+
+  .rank-badge {
+    flex: 0 0 auto;
+    width: 64px;
+    height: 64px;
+    clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+    background: linear-gradient(160deg, var(--cyan) 0%, var(--cyan-dark) 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 0 18px rgba(33,230,193,0.35);
+  }
+
+  .rank-badge svg { width: 30px; height: 30px; }
+
+  .rank-info { flex: 1; min-width: 0; }
+
+  .rank-label {
+    font-size: 12px;
+    color: var(--cyan);
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    margin: 0 0 3px;
+  }
+
+  .rank-name {
+    font-family: "Orbitron", sans-serif;
+    font-weight: 800;
+    font-size: 18px;
+    margin: 0 0 10px;
+    color: var(--text);
+  }
+
+  .xp-track {
+    height: 8px;
+    background: var(--border-soft);
+    border-radius: 999px;
+    overflow: hidden;
+  }
+
+  .xp-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--cyan-dark), var(--cyan));
+    border-radius: 999px;
+    box-shadow: 0 0 8px rgba(33,230,193,0.6);
+    transition: width 0.4s ease;
+  }
+
+  .xp-caption {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 4px 10px;
+    font-size: 12px;
+    color: var(--muted);
+    margin-top: 6px;
+  }
+
+  .xp-caption .mono { color: var(--gold); }
+
+  header.intro { text-align: center; margin-bottom: 20px; }
+
+  header.intro h1 {
+    font-family: "Orbitron", sans-serif;
+    font-weight: 800;
+    font-size: 22px;
+    color: var(--text);
+    margin: 0 0 6px;
+    letter-spacing: 0.03em;
+  }
+
+  header.intro p {
+    color: var(--muted);
+    font-size: 14px;
+    margin: 0;
+  }
+
+  .section-label {
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+    color: var(--muted);
+    margin: 24px 0 12px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .section-label::after {
+    content: "";
+    flex: 1;
+    height: 1px;
+    background: var(--border);
+  }
+
+  /* ---------- Mission cards ---------- */
+  .mission-grid { display: flex; flex-direction: column; gap: 12px; }
+
+  .mission-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-left: 3px solid var(--m-color, var(--cyan));
+    border-radius: var(--radius);
+    padding: 16px;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    text-align: left;
+    cursor: pointer;
+    font: inherit;
+    color: inherit;
+    width: 100%;
+    transition: border-color 0.15s ease, background 0.15s ease;
+  }
+
+  .mission-card:hover, .mission-card:focus-visible {
+    background: var(--surface-2);
+  }
+
+  .mission-card:focus-visible { outline: 2px solid var(--m-color, var(--cyan)); outline-offset: 2px; }
+
+  .mission-icon {
+    flex: 0 0 auto;
+    width: 46px;
+    height: 46px;
+    clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+    background: var(--m-pale, var(--cyan-pale));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .mission-icon svg { width: 22px; height: 22px; color: var(--m-color, var(--cyan)); }
+
+  .mission-body { flex: 1; min-width: 0; }
+
+  .mission-code {
+    font-size: 11px;
+    color: var(--m-color, var(--cyan));
+    margin: 0 0 3px;
+    letter-spacing: 0.08em;
+  }
+
+  .mission-title { font-size: 16px; font-weight: 700; margin: 0 0 3px; color: var(--text); }
+  .mission-sub { font-size: 12px; color: var(--muted); margin: 0; }
+
+  .mission-status {
+    flex: 0 0 auto;
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--muted);
+    text-align: right;
+  }
+
+  .mission-status.done { color: var(--green); }
+
+  footer.foot {
+    text-align: center;
+    margin-top: 34px;
+    font-size: 12px;
+    color: var(--muted);
+  }
+
+  /* ---------- Chunky button ---------- */
+  .btn {
+    --btn-bg: var(--cyan);
+    --btn-fg: #06231D;
+    background: var(--btn-bg);
+    color: var(--btn-fg);
+    border: none;
+    border-radius: 12px;
+    padding: 15px;
+    font-family: "Rajdhani", sans-serif;
+    font-weight: 700;
+    font-size: 16px;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    cursor: pointer;
+    width: 100%;
+    transition: transform 0.05s ease, box-shadow 0.15s ease;
+    box-shadow: 0 0 0 rgba(33,230,193,0);
+  }
+
+  .btn:hover { box-shadow: 0 0 16px rgba(33,230,193,0.35); }
+  .btn:active { transform: translateY(1px); }
+  .btn:disabled { opacity: 0.4; cursor: default; box-shadow: none; }
+
+  .btn.secondary {
+    --btn-bg: transparent;
+    --btn-fg: var(--text);
+    border: 1.5px solid var(--border);
+  }
+  .btn.secondary:hover { box-shadow: none; border-color: var(--cyan); }
+
+  .btn.danger { --btn-bg: var(--red); --btn-fg: #2B0611; }
+  .btn.danger:hover { box-shadow: 0 0 16px rgba(255,77,106,0.35); }
+
+  /* ---------- Briefing / story view ---------- */
+  #view-briefing, #view-quiz, #view-result { display: none; }
+  #view-briefing.show, #view-quiz.show, #view-result.show { display: block; }
+  #view-home.hide { display: none; }
+
+  .story-progress {
+    flex: 1;
+    display: flex;
+    gap: 6px;
+  }
+
+  .story-seg {
+    flex: 1;
+    height: 4px;
+    background: var(--border-soft);
+    border-radius: 999px;
+    overflow: hidden;
+  }
+
+  .story-seg .fill {
+    height: 100%;
+    width: 0%;
+    background: var(--q-color, var(--cyan));
+    border-radius: 999px;
+  }
+
+  .story-seg.filled .fill { width: 100%; }
+  .story-seg.active .fill { animation: storyFill var(--story-dur, 4.5s) linear forwards; }
+
+  @keyframes storyFill { from { width: 0%; } to { width: 100%; } }
+
+  .story-stage {
+    position: relative;
+    min-height: 340px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 32px 24px 28px;
+    margin: 16px 0 14px;
+    overflow: hidden;
+  }
+
+  .story-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    position: relative;
+    z-index: 1;
+  }
+
+  .story-icon-ring {
+    width: 84px;
+    height: 84px;
+    border-radius: 50%;
+    background: var(--q-pale, var(--cyan-pale));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 20px;
+    animation: iconPop 0.5s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+  }
+
+  .story-icon-ring svg { width: 40px; height: 40px; color: var(--q-color, var(--cyan)); }
+
+  .story-icon-ring.pulse svg { animation: iconBeat 1.6s ease-in-out infinite 0.5s; }
+  .story-icon-ring.draw svg path { stroke-dasharray: 60; stroke-dashoffset: 60; animation: drawIn 0.9s ease-out 0.3s forwards; }
+
+  @keyframes iconPop {
+    0% { transform: scale(0.4); opacity: 0; }
+    70% { transform: scale(1.12); opacity: 1; }
+    100% { transform: scale(1); opacity: 1; }
+  }
+
+  @keyframes iconBeat {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.1); }
+  }
+
+  @keyframes drawIn {
+    to { stroke-dashoffset: 0; }
+  }
+
+  .story-kicker {
+    font-family: "Space Mono", monospace;
+    font-size: 12px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--q-color, var(--cyan));
+    margin: 0 0 10px;
+    opacity: 0;
+    animation: fadeSlideUp 0.4s ease-out 0.15s forwards;
+  }
+
+  .story-text {
+    font-size: 17px;
+    line-height: 1.55;
+    color: var(--text);
+    margin: 0;
+    max-width: 380px;
+    opacity: 0;
+    animation: fadeSlideUp 0.45s ease-out 0.3s forwards;
+  }
+
+  .story-signs {
+    list-style: none;
+    padding: 0;
+    margin: 4px 0 0;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    width: 100%;
+    max-width: 380px;
+  }
+
+  .story-signs li {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background: var(--surface-2);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 10px 14px;
+    font-size: 14px;
+    text-align: left;
+    color: var(--text);
+    opacity: 0;
+    animation: fadeSlideUp 0.4s ease-out forwards;
+  }
+
+  .story-signs li svg { flex: 0 0 auto; width: 16px; height: 16px; color: var(--q-color, var(--cyan)); }
+
+  @keyframes fadeSlideUp {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .story-icon-ring, .story-kicker, .story-text, .story-signs li { animation: none !important; opacity: 1 !important; }
+    .story-icon-ring.draw svg path { stroke-dashoffset: 0 !important; }
+    .story-seg.active .fill { animation: none !important; width: 100%; }
+  }
+
+  .story-tap-zones {
+    position: relative;
+    height: 0;
+  }
+
+  .story-tap {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    width: 32%;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    z-index: 2;
+  }
+
+  .story-tap.left { left: 0; }
+  .story-tap.right { right: 0; }
+
+  .quiz-top { display: flex; align-items: center; gap: 12px; margin-bottom: 22px; }
+
+  .close-btn {
+    background: none; border: 1.5px solid var(--border); border-radius: 10px;
+    color: var(--muted); cursor: pointer; display: flex; padding: 8px;
+  }
+  .close-btn svg { width: 18px; height: 18px; }
+
+  .progress-track { flex: 1; height: 10px; background: var(--border-soft); border-radius: 999px; overflow: hidden; }
+  .progress-fill { height: 100%; background: linear-gradient(90deg, var(--q-dark, var(--cyan-dark)), var(--q-color, var(--cyan))); border-radius: 999px; transition: width 0.3s ease; }
+
+  .mission-tag {
+    display: inline-block;
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    color: var(--q-color, var(--cyan));
+    margin-bottom: 10px;
+  }
+
+  .quiz-card h2 {
+    font-size: 20px; font-weight: 700; line-height: 1.45; margin: 0 0 22px; color: var(--text);
+  }
+
+  .options { display: flex; flex-direction: column; gap: 12px; margin-bottom: 90px; }
+
+  .option-btn {
+    text-align: left;
+    background: var(--surface);
+    border: 1.5px solid var(--border);
+    border-radius: 12px;
+    padding: 15px 16px;
+    font-size: 16px;
+    font-weight: 600;
+    font-family: "Inter", sans-serif;
+    color: var(--text);
+    cursor: pointer;
+    transition: border-color 0.1s ease, background 0.1s ease;
+  }
+
+  .option-btn:hover:not(:disabled) { border-color: var(--q-color, var(--cyan)); background: var(--surface-2); }
+
+  .option-btn.correct { background: var(--green-pale); border-color: var(--green); color: var(--green); }
+  .option-btn.wrong { background: var(--red-pale); border-color: var(--red); color: var(--red); }
+  .option-btn:disabled { cursor: default; }
+
+  /* ---------- Bottom feedback banner ---------- */
+  .feedback-banner {
+    position: fixed; left: 0; right: 0; bottom: -280px;
+    background: #0D1420;
+    border-top: 1.5px solid var(--green);
+    box-shadow: 0 -8px 30px rgba(76,255,107,0.08);
+    padding: 18px 20px calc(18px + env(safe-area-inset-bottom, 0px));
+    transition: bottom 0.28s ease;
+    z-index: 10;
+  }
+  .feedback-banner.show { bottom: 0; }
+  .feedback-banner.wrong { border-top-color: var(--red); box-shadow: 0 -8px 30px rgba(255,77,106,0.08); }
+
+  .feedback-inner { max-width: 560px; margin: 0 auto; }
+
+  .feedback-title {
+    display: flex; align-items: center; gap: 10px;
+    font-family: "Rajdhani", sans-serif; font-weight: 700; text-transform: uppercase; letter-spacing: 0.04em;
+    font-size: 17px; margin-bottom: 8px; color: var(--green);
+  }
+  .feedback-banner.wrong .feedback-title { color: var(--red); }
+  .feedback-title svg { width: 22px; height: 22px; }
+
+  .feedback-text { font-size: 14px; color: var(--muted); font-weight: 400; margin: 0 0 16px; line-height: 1.5; }
+
+  /* ---------- Result view ---------- */
+  .result-wrap { text-align: center; padding-top: 16px; }
+
+  .result-badge {
+    width: 110px; height: 110px; margin: 0 auto 18px;
+    clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+    background: linear-gradient(160deg, var(--gold), #B8860B);
+    display: flex; align-items: center; justify-content: center;
+    box-shadow: 0 0 30px rgba(255,201,74,0.4);
+  }
+  .result-badge svg { width: 52px; height: 52px; color: #3A2600; }
+
+  .result-wrap h2 { font-family: "Orbitron", sans-serif; font-size: 21px; margin: 0 0 10px; color: var(--text); }
+
+  .result-wrap .xp-earned {
+    display: inline-flex; align-items: center; gap: 8px;
+    background: var(--surface-2); border: 1px solid var(--border);
+    font-family: "Space Mono", monospace; font-weight: 700; font-size: 15px;
+    color: var(--gold); padding: 8px 18px; border-radius: 999px; margin: 0 0 18px;
+  }
+
+  .result-wrap p.msg { color: var(--muted); font-size: 14px; max-width: 380px; margin: 0 auto 26px; }
+
+  .result-actions { display: flex; flex-direction: column; gap: 12px; }
+
+  .hidden { display: none !important; }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <!-- HOME VIEW -->
+  <div id="view-home">
+    <div class="rank-card">
+      <div class="rank-badge">
+        <svg viewBox="0 0 24 24" fill="none" stroke="#06231D" stroke-width="2.2"><path d="M12 2l8 4v6c0 5-3.5 8.5-8 10-4.5-1.5-8-5-8-10V6l8-4z"/><path d="M9 12l2 2 4-4"/></svg>
+      </div>
+      <div class="rank-info">
+        <p class="rank-label ui">Sua patente</p>
+        <p class="rank-name" id="rank-name">Recruta Digital</p>
+        <div class="xp-track"><div class="xp-fill" id="xp-fill" style="width:0%"></div></div>
+        <div class="xp-caption">
+          <span class="mono"><span id="total-score">0</span> XP</span>
+          <span id="rank-next">Próxima patente: 40 XP</span>
+        </div>
+      </div>
+    </div>
+
+    <header class="intro">
+      <h1>RANGERS DIGITAIS</h1>
+      <p>Comunidade Àse Ylé Igbo Alaketu · treinamento de ciberdefesa pessoal</p>
+    </header>
+
+    <div class="section-label ui">Missões · <span id="missions-done">0</span>/4 concluídas</div>
+    <div class="mission-grid" id="mission-grid"></div>
+
+    <footer class="foot">Nenhum dado pessoal é coletado nesta plataforma.<br><button id="btn-reset" style="background:none;border:none;color:var(--muted);text-decoration:underline;cursor:pointer;font-size:12px;padding:8px 0;font-family:inherit;">Resetar progresso</button></footer>
+  </div>
+
+  <!-- BRIEFING VIEW (animated story before the quiz) -->
+  <div id="view-briefing">
+    <div class="quiz-top">
+      <button class="close-btn" id="btn-briefing-back" aria-label="Voltar">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M15 18l-6-6 6-6"/></svg>
+      </button>
+      <div class="story-progress" id="story-progress"></div>
+    </div>
+
+    <span class="mission-tag ui" id="briefing-tag"></span>
+
+    <div class="story-stage" id="story-stage">
+      <div class="story-content" id="story-content"></div>
+      <button class="story-tap left" id="story-tap-prev" aria-label="Cena anterior"></button>
+      <button class="story-tap right" id="story-tap-next" aria-label="Próxima cena"></button>
+    </div>
+
+    <button class="btn hidden" id="btn-start-mission">Iniciar missão</button>
+  </div>
+
+  <!-- QUIZ VIEW -->
+  <div id="view-quiz">
+    <div class="quiz-top">
+      <button class="close-btn" id="btn-close" aria-label="Fechar e voltar">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M6 6l12 12M18 6L6 18"/></svg>
+      </button>
+      <div class="progress-track"><div class="progress-fill" id="progress-fill"></div></div>
+    </div>
+
+    <span class="mission-tag ui ml" id="mission-tag"></span>
+    <div class="quiz-card">
+      <h2 id="question-text"></h2>
+      <div class="options" id="options-list"></div>
+    </div>
+  </div>
+
+  <!-- Fixed bottom feedback banner -->
+  <div class="feedback-banner" id="feedback-banner">
+    <div class="feedback-inner">
+      <div class="feedback-title" id="feedback-title"></div>
+      <p class="feedback-text" id="feedback-text"></p>
+      <button class="btn" id="btn-next">Continuar</button>
+    </div>
+  </div>
+
+  <!-- RESULT VIEW -->
+  <div id="view-result">
+    <div class="result-wrap">
+      <div class="result-badge">
+        <svg viewBox="0 0 24 24" fill="none" stroke="#3A2600" stroke-width="2"><path d="M12 2l2.9 6.3 6.9.9-5 4.8 1.3 6.9-6.1-3.4-6.1 3.4 1.3-6.9-5-4.8 6.9-.9z"/></svg>
+      </div>
+      <h2 id="result-title"></h2>
+      <div class="xp-earned">+<span id="result-xp"></span> XP · <span id="result-score"></span>/<span id="result-total"></span> certas</div>
+      <p class="msg" id="result-msg"></p>
+      <div class="result-actions">
+        <button class="btn" id="btn-retry">Repetir missão</button>
+        <button class="btn secondary" id="btn-home">Voltar ao painel</button>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+(function () {
+  "use strict";
+
+  var TOPICS = [
+    {
+      id: "phishing",
+      title: "E-mails e mensagens falsas",
+      desc: "Phishing",
+      color: "cyan", code: "01",
+      icon: 'envelope',
+      story: {
+        def: "Phishing é quando alguém cria mensagens ou e-mails falsos, imitando bancos ou empresas conhecidas, pra roubar seus dados.",
+        signs: ["Urgência: \"sua conta será bloqueada\"", "Erros de escrita ou endereço estranho", "Pedido pra clicar em um link agora"],
+        protect: "Nunca clique em links de mensagens não solicitadas. Digite o site oficial você mesmo ou use o aplicativo do banco."
+      },
+      questions: [
+        {
+          q: "Você recebe uma mensagem dizendo que sua conta do banco será bloqueada e pede para clicar em um link agora. O que fazer?",
+          options: [
+            "Clicar no link rapidamente para resolver antes que bloqueie",
+            "Não clicar; entrar em contato com o banco por um número oficial conhecido",
+            "Responder a mensagem pedindo mais detalhes",
+            "Encaminhar a mensagem para vários contatos para avisar"
+          ],
+          correct: 1,
+          explanation: "Mensagens que criam urgência para você clicar rápido são um sinal clássico de golpe. O caminho seguro é sempre buscar o contato oficial da empresa por fora da mensagem recebida."
+        },
+        {
+          q: "Qual desses sinais mais indica que um e-mail pode ser falso?",
+          options: [
+            "O remetente é uma empresa que você conhece",
+            "O texto está bem escrito",
+            "O endereço de e-mail do remetente tem letras estranhas ou não bate com a empresa",
+            "O e-mail chegou de manhã"
+          ],
+          correct: 2,
+          explanation: "Golpistas costumam usar endereços parecidos, mas com pequenas diferenças. Sempre vale conferir o endereço completo do remetente."
+        },
+        {
+          q: "Você ganhou um prêmio em uma promoção que nunca participou e pedem seus dados para liberar. O que isso indica?",
+          options: [
+            "É uma sorte rara, deve preencher os dados",
+            "Provavelmente é um golpe, prêmios reais não pedem dados assim",
+            "Deve pagar uma taxa pequena para confirmar",
+            "Deve compartilhar com amigos antes de decidir"
+          ],
+          correct: 1,
+          explanation: "Promoções que você nunca participou e que pedem dados pessoais ou pagamento antecipado são, na grande maioria das vezes, golpe."
+        },
+        {
+          q: "O que é mais seguro fazer ao receber um link suspeito, mesmo de um contato conhecido?",
+          options: [
+            "Clicar, já que é de alguém confiável",
+            "Perguntar para a pessoa, por outro meio, se ela realmente enviou aquilo",
+            "Ignorar e apagar sem avisar ninguém",
+            "Encaminhar para confirmar com outras pessoas"
+          ],
+          correct: 1,
+          explanation: "Contas de conhecidos podem ser invadidas. Confirmar diretamente com a pessoa, por outro canal, evita cair em golpes que usam contas roubadas."
+        }
+      ]
+    },
+    {
+      id: "engenharia",
+      title: "Engenharia social",
+      desc: "Manipulação e confiança",
+      color: "magenta", code: "02",
+      icon: 'mask',
+      story: {
+        def: "Engenharia social é manipulação psicológica: usar confiança, medo ou urgência pra te fazer agir sem pensar.",
+        signs: ["Pedido de sigilo sobre a situação", "Pressa exagerada pra você decidir", "Alguém se passando por autoridade"],
+        protect: "Pare, respire e confirme por outro meio (uma ligação de voz, por exemplo) antes de agir."
+      },
+      questions: [
+        {
+          q: "Uma pessoa liga se passando por um 'técnico' e pede para você instalar um programa no celular para 'resolver um problema'. O que fazer?",
+          options: [
+            "Instalar, já que parece uma emergência",
+            "Desligar e não instalar nada sem confirmar por conta própria",
+            "Pedir o nome completo do técnico antes de instalar",
+            "Perguntar se é gratuito antes de instalar"
+          ],
+          correct: 1,
+          explanation: "Golpistas usam a pressa e a autoridade para te convencer a agir sem pensar. Desligar e verificar por conta própria é sempre mais seguro."
+        },
+        {
+          q: "O que é engenharia social, de forma simples?",
+          options: [
+            "Um tipo de vírus de computador",
+            "Quando alguém manipula sua confiança ou emoção para conseguir informações ou fazer você agir",
+            "Uma rede social nova",
+            "Um programa de proteção contra golpes"
+          ],
+          correct: 1,
+          explanation: "É a manipulação psicológica: usar confiança, medo, urgência ou curiosidade para te fazer entregar informações sem perceber o risco."
+        },
+        {
+          q: "Alguém se apresenta como 'parente distante em dificuldade' e pede dinheiro com urgência por mensagem. O que é mais prudente?",
+          options: [
+            "Enviar o dinheiro imediatamente para ajudar",
+            "Confirmar por uma ligação de voz ou vídeo antes de qualquer coisa",
+            "Pedir para outra pessoa da família enviar",
+            "Ignorar totalmente sem verificar"
+          ],
+          correct: 1,
+          explanation: "Golpes emocionais são muito comuns. Confirmar por voz ou vídeo, e não só por texto, ajuda a identificar se é realmente a pessoa."
+        },
+        {
+          q: "Qual desses NÃO é um sinal comum de manipulação usada em golpes?",
+          options: [
+            "Criar sensação de urgência",
+            "Pedir para manter segredo da situação",
+            "Explicar com calma e te dar tempo para pensar",
+            "Fingir ser uma autoridade (polícia, banco, empresa)"
+          ],
+          correct: 2,
+          explanation: "Quem quer te ajudar de verdade não tem pressa nem pede segredo. Urgência, sigilo e autoridade forçada são táticas clássicas de manipulação."
+        }
+      ]
+    },
+    {
+      id: "vishing",
+      title: "Golpes por telefone",
+      desc: "Vishing",
+      color: "amber", code: "03",
+      icon: 'phone',
+      story: {
+        def: "Vishing é o golpe aplicado por ligação telefônica, muitas vezes se passando por banco ou empresa.",
+        signs: ["Pedido de senha ou código por telefone", "Ligação de número desconhecido", "Urgência pra resolver agora mesmo"],
+        protect: "Desligue e ligue você mesmo pro número oficial, impresso no cartão ou no aplicativo do banco."
+      },
+      questions: [
+        {
+          q: "O que é 'vishing'?",
+          options: [
+            "Um golpe feito por e-mail",
+            "Um golpe aplicado por ligação telefônica",
+            "Um tipo de vírus de celular",
+            "Uma rede social de vídeos"
+          ],
+          correct: 1,
+          explanation: "Vishing é a versão do golpe feita por voz/telefone — alguém liga se passando por banco, empresa ou autoridade para te enganar."
+        },
+        {
+          q: "Você recebe uma ligação de alguém dizendo ser do banco, pedindo a senha do cartão para 'cancelar uma compra suspeita'. O que fazer?",
+          options: [
+            "Informar a senha, já que é o banco ligando",
+            "Nunca informar senha por telefone; desligar e ligar direto pro número oficial do banco",
+            "Informar só os últimos dígitos",
+            "Perguntar o nome do atendente e informar a senha depois"
+          ],
+          correct: 1,
+          explanation: "Bancos nunca pedem senha completa por telefone. Ao desconfiar, desligue e ligue você mesmo para o número oficial do banco."
+        },
+        {
+          q: "Uma ligação automática (gravada) pede para você apertar um número para 'falar com um atendente sobre uma dívida'. Qual o risco?",
+          options: [
+            "Nenhum, é só uma ligação automática",
+            "Pode ser um golpe para confirmar que seu número está ativo ou te transferir para um golpista",
+            "É sempre uma cobrança legítima",
+            "É proibido esse tipo de ligação, então é seguro"
+          ],
+          correct: 1,
+          explanation: "Ligações automáticas desconhecidas podem ser usadas para identificar números ativos ou iniciar um golpe. O mais seguro é não interagir."
+        },
+        {
+          q: "Qual atitude ajuda a se proteger de golpes por telefone?",
+          options: [
+            "Sempre informar dados pessoais quando perguntado com educação",
+            "Desconfiar de pedidos de dinheiro ou dados urgentes por telefone, mesmo que pareça oficial",
+            "Confiar em qualquer ligação que mostre o nome do banco na tela",
+            "Nunca desligar uma ligação, para não parecer rude"
+          ],
+          correct: 1,
+          explanation: "O nome que aparece na tela pode ser falsificado. Desconfiar de pedidos urgentes por telefone é a atitude mais segura."
+        }
+      ]
+    },
+    {
+      id: "golpes",
+      title: "Golpes digitais do dia a dia",
+      desc: "Pix, WhatsApp e promoções",
+      color: "green", code: "04",
+      icon: 'chat',
+      story: {
+        def: "Golpes do dia a dia acontecem por WhatsApp, Pix, promoções falsas e até clonagem de conta.",
+        signs: ["Contato pedindo Pix urgente", "Promoção boa demais pra ser verdade", "Pedido do código de verificação"],
+        protect: "Confirme por voz antes de qualquer pagamento e nunca compartilhe o código de verificação."
+      },
+      questions: [
+        {
+          q: "Seu contato do WhatsApp muda de número e pede um Pix urgente 'porque perdeu o celular antigo'. O que fazer?",
+          options: [
+            "Enviar o Pix rápido para ajudar",
+            "Ligar por voz para o número antigo, ou perguntar algo só a pessoa real saberia, antes de enviar qualquer valor",
+            "Pedir para a pessoa provar mandando uma foto",
+            "Enviar metade do valor pedido"
+          ],
+          correct: 1,
+          explanation: "Esse é um golpe muito comum: clonam ou criam um número novo se passando por um contato. Confirmar por voz, com o número antigo, evita cair nesse golpe."
+        },
+        {
+          q: "O que é mais seguro fazer com links de promoções muito vantajosas recebidas por WhatsApp?",
+          options: [
+            "Clicar e preencher os dados rápido, antes que acabe",
+            "Desconfiar, e verificar direto no site oficial da empresa se a promoção existe",
+            "Encaminhar para vários grupos para garantir o desconto",
+            "Compartilhar seus dados bancários para 'confirmar' a promoção"
+          ],
+          correct: 1,
+          explanation: "Promoções 'boas demais para ser verdade' costumam ser golpe. Verificar direto no site oficial da empresa é o caminho seguro."
+        },
+        {
+          q: "Você recebe uma mensagem dizendo que seu WhatsApp será bloqueado e pede um código de 6 dígitos que chegou por SMS. O que fazer?",
+          options: [
+            "Enviar o código para não perder a conta",
+            "Nunca compartilhar esse código; ele serve para golpistas roubarem sua conta",
+            "Enviar só se a pessoa parecer confiável",
+            "Enviar e depois trocar a senha"
+          ],
+          correct: 1,
+          explanation: "Esse código serve exatamente para transferir sua conta do WhatsApp para outro celular. Compartilhá-lo é a forma mais comum de perder o controle da conta."
+        },
+        {
+          q: "Qual é uma boa prática geral para se proteger de golpes digitais no dia a dia?",
+          options: [
+            "Usar a mesma senha em tudo, para não esquecer",
+            "Desconfiar de pedidos urgentes de dinheiro ou dados, e confirmar sempre por outro meio",
+            "Compartilhar senhas com pessoas de confiança",
+            "Clicar em links para saber se são verdadeiros"
+          ],
+          correct: 1,
+          explanation: "A regra de ouro contra golpes digitais é: desconfiar de urgência e confirmar por outro canal antes de agir."
+        }
+      ]
+    }
+  ];
+  var ICONS = {
+    envelope: '<path d="M4 6h16v12H4z"/><path d="M4 7l8 6 8-6"/>',
+    mask: '<circle cx="8.5" cy="12" r="2.3"/><circle cx="15.5" cy="12" r="2.3"/><path d="M3 10c1-3 4-5 9-5s8 2 9 5c-1 1-2 1.5-3 1.7M3 10c1 1 2 1.5 3 1.7M15.5 14.3c-1 1.2-2.2 1.8-3.5 1.8s-2.5-.6-3.5-1.8"/>',
+    phone: '<path d="M4 4c0 9 7 16 16 16l2-4-6-2-2 2c-2-1-4-3-5-5l2-2-2-6z"/>',
+    chat: '<path d="M4 5h16v11H9l-4 3.5V16H4z"/>',
+    warning: '<path d="M12 3.5l9.5 16.5H2.5z"/><path d="M12 9.5v5"/><circle cx="12" cy="17.3" r="0.9" fill="currentColor" stroke="none"/>',
+    shieldCheck: '<path d="M12 2l8 4v6c0 5-3.5 8.5-8 10-4.5-1.5-8-5-8-10V6l8-4z"/><path d="M9 12l2 2 4-4"/>'
+  };
+
+  function svgIcon(name, color) {
+    return '<svg viewBox="0 0 24 24" fill="none" stroke="' + color + '" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round">' + ICONS[name] + '</svg>';
+  }
+
+  var COLOR_MAP = {
+    cyan:    { c: "var(--cyan)",    dark: "var(--cyan-dark)",    pale: "var(--cyan-pale)" },
+    magenta: { c: "var(--magenta)", dark: "var(--magenta-dark)", pale: "var(--magenta-pale)" },
+    amber:   { c: "var(--amber)",   dark: "var(--amber-dark)",   pale: "var(--amber-pale)" },
+    green:   { c: "var(--green)",   dark: "var(--green-dark)",   pale: "var(--green-pale)" }
+  };
+
+  var RANK_RULES = [
+    { name: "Curioso Digital", test: function () { return true; } },
+    { name: "Abian Digital", test: function (s) { return s.doneCount >= 1; } },
+    { name: "Iyawo Digital", test: function (s) { return s.doneCount >= 2 && s.accuracy >= 0.5; } },
+    { name: "Egbon Digital", test: function (s) { return s.doneCount >= 4 && s.accuracy >= 0.75; } }
+  ];
+
+  var XP_PER_CORRECT = 10;
+
+  var state = { topicId: null, qIndex: 0, correctCount: 0, answered: false };
+  var progress = loadProgress();
+
+  function loadProgress() {
+    try {
+      var raw = localStorage.getItem("rangers_digitais_progress");
+      return raw ? JSON.parse(raw) : {};
+    } catch (e) { return {}; }
+  }
+
+  function saveProgress() {
+    try { localStorage.setItem("rangers_digitais_progress", JSON.stringify(progress)); }
+    catch (e) { /* ignore */ }
+  }
+
+  function totalScore() {
+    var total = 0;
+    Object.keys(progress).forEach(function (k) { total += (progress[k].score || 0) * XP_PER_CORRECT; });
+    return total;
+  }
+
+  function totalDone() {
+    return Object.keys(progress).filter(function (k) { return progress[k].done; }).length;
+  }
+
+  function computeStats() {
+    var doneIds = Object.keys(progress).filter(function (k) { return progress[k].done; });
+    var doneCount = doneIds.length;
+    var sumScore = 0;
+    doneIds.forEach(function (id) { sumScore += progress[id].score; });
+    var maxPossible = doneCount * 4;
+    var accuracy = maxPossible > 0 ? sumScore / maxPossible : 0;
+    return { doneCount: doneCount, accuracy: accuracy };
+  }
+
+  function currentRankName(s) {
+    var name = RANK_RULES[0].name;
+    for (var i = 1; i < RANK_RULES.length; i++) {
+      if (RANK_RULES[i].test(s)) name = RANK_RULES[i].name;
+    }
+    return name;
+  }
+
+  function nextRankHint(s) {
+    if (s.doneCount < 1) return "Complete a 1ª missão para virar Abian Digital";
+    if (!(s.doneCount >= 2 && s.accuracy >= 0.5)) {
+      return "Complete 2 missões com 50%+ de acerto para virar Iyawo Digital";
+    }
+    if (!(s.doneCount >= 4 && s.accuracy >= 0.75)) {
+      return "Complete as 4 missões com 75%+ de acerto para virar Egbon Digital";
+    }
+    return "Patente máxima alcançada";
+  }
+
+  function renderHeader() {
+    var xp = totalScore();
+    var s = computeStats();
+    document.getElementById("total-score").textContent = xp;
+    document.getElementById("rank-name").textContent = currentRankName(s);
+    document.getElementById("missions-done").textContent = s.doneCount;
+
+    var pct = Math.min(100, Math.round((s.doneCount / 4) * 100));
+    document.getElementById("xp-fill").style.width = pct + "%";
+    document.getElementById("rank-next").textContent = nextRankHint(s);
+  }
+
+  function renderHome() {
+    renderHeader();
+
+    var grid = document.getElementById("mission-grid");
+    grid.innerHTML = "";
+
+    TOPICS.forEach(function (topic) {
+      var c = COLOR_MAP[topic.color];
+      var p = progress[topic.id];
+
+      var card = document.createElement("button");
+      card.className = "mission-card";
+      card.style.setProperty("--m-color", c.c);
+      card.style.setProperty("--m-pale", c.pale);
+
+      card.innerHTML =
+        '<div class="mission-icon">' + svgIcon(topic.icon, c.c) + '</div>' +
+        '<div class="mission-body">' +
+          '<p class="mission-code mono">MISSÃO ' + topic.code + '</p>' +
+          '<p class="mission-title">' + topic.title + '</p>' +
+          '<p class="mission-sub">' + topic.desc + ' · ' + topic.questions.length + ' perguntas</p>' +
+        '</div>' +
+        '<div class="mission-status' + (p && p.done ? ' done' : '') + '">' +
+          (p && p.done ? p.score + '/' + topic.questions.length : 'Iniciar') +
+        '</div>';
+
+      card.addEventListener("click", function () { openBriefing(topic.id); });
+      grid.appendChild(card);
+    });
+  }
+
+  var storyState = { topicId: null, sceneIndex: 0, timer: null };
+  var STORY_DURATION = 4500;
+
+  function openBriefing(topicId) {
+    var topic = TOPICS.filter(function (t) { return t.id === topicId; })[0];
+    var c = COLOR_MAP[topic.color];
+
+    document.getElementById("view-briefing").style.setProperty("--q-color", c.c);
+    document.getElementById("view-briefing").style.setProperty("--q-pale", c.pale);
+    document.getElementById("briefing-tag").style.color = c.c;
+    document.getElementById("briefing-tag").textContent = "MISSÃO " + topic.code + " · " + topic.desc.toUpperCase();
+
+    var segWrap = document.getElementById("story-progress");
+    segWrap.innerHTML = "";
+    for (var i = 0; i < 3; i++) {
+      var seg = document.createElement("div");
+      seg.className = "story-seg";
+      seg.innerHTML = '<div class="fill"></div>';
+      segWrap.appendChild(seg);
+    }
+
+    document.getElementById("btn-start-mission").classList.add("hidden");
+    document.getElementById("btn-start-mission").onclick = function () { startTopic(topicId); };
+
+    storyState = { topicId: topicId, sceneIndex: 0, timer: null };
+    showView("briefing");
+    renderScene();
+  }
+
+  function sceneMarkup(topic, index) {
+    var s = topic.story;
+    if (index === 0) {
+      return '<div class="story-icon-ring pulse">' + svgIcon(topic.icon, "currentColor") + '</div>' +
+        '<p class="story-kicker">O que é</p>' +
+        '<p class="story-text">' + s.def + '</p>';
+    }
+    if (index === 1) {
+      var items = s.signs.map(function (txt, i) {
+        return '<li style="animation-delay:' + (0.35 + i * 0.15) + 's">' +
+          '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">' + ICONS.warning + '</svg>' +
+          '<span>' + txt + '</span></li>';
+      }).join("");
+      return '<div class="story-icon-ring pulse">' + svgIcon("warning", "currentColor") + '</div>' +
+        '<p class="story-kicker">Sinais de alerta</p>' +
+        '<ul class="story-signs">' + items + '</ul>';
+    }
+    return '<div class="story-icon-ring draw">' + svgIcon("shieldCheck", "currentColor") + '</div>' +
+      '<p class="story-kicker">Como se proteger</p>' +
+      '<p class="story-text">' + s.protect + '</p>';
+  }
+
+  function renderScene() {
+    var topic = TOPICS.filter(function (t) { return t.id === storyState.topicId; })[0];
+    var segs = document.querySelectorAll("#story-progress .story-seg");
+    segs.forEach(function (seg, i) {
+      seg.className = "story-seg" + (i < storyState.sceneIndex ? " filled" : i === storyState.sceneIndex ? " active" : "");
+    });
+
+    document.getElementById("story-content").innerHTML = sceneMarkup(topic, storyState.sceneIndex);
+
+    if (storyState.timer) clearTimeout(storyState.timer);
+    storyState.timer = setTimeout(advanceScene, STORY_DURATION);
+  }
+
+  function advanceScene() {
+    if (storyState.sceneIndex < 2) {
+      storyState.sceneIndex++;
+      renderScene();
+    } else {
+      if (storyState.timer) clearTimeout(storyState.timer);
+      var segs = document.querySelectorAll("#story-progress .story-seg");
+      segs.forEach(function (seg) { seg.className = "story-seg filled"; });
+      document.getElementById("btn-start-mission").classList.remove("hidden");
+    }
+  }
+
+  function rewindScene() {
+    if (storyState.sceneIndex > 0) {
+      storyState.sceneIndex--;
+      document.getElementById("btn-start-mission").classList.add("hidden");
+      renderScene();
+    }
+  }
+
+  document.getElementById("story-tap-next").addEventListener("click", function () {
+    if (storyState.timer) clearTimeout(storyState.timer);
+    advanceScene();
+  });
+  document.getElementById("story-tap-prev").addEventListener("click", rewindScene);
+
+  function startTopic(topicId) {
+    state.topicId = topicId;
+    state.qIndex = 0;
+    state.correctCount = 0;
+    state.answered = false;
+    showView("quiz");
+    renderQuestion();
+  }
+
+  function getTopic() {
+    return TOPICS.filter(function (t) { return t.id === state.topicId; })[0];
+  }
+
+  function applyQuizColor(topic) {
+    var c = COLOR_MAP[topic.color];
+    document.getElementById("view-quiz").style.setProperty("--q-color", c.c);
+    document.getElementById("view-quiz").style.setProperty("--q-dark", c.dark);
+    document.getElementById("mission-tag").style.color = c.c;
+  }
+
+  function renderQuestion() {
+    var topic = getTopic();
+    var q = topic.questions[state.qIndex];
+    state.answered = false;
+
+    applyQuizColor(topic);
+    document.getElementById("mission-tag").textContent = "MISSÃO " + topic.code + " · " + topic.desc.toUpperCase() + " · " + (state.qIndex + 1) + "/" + topic.questions.length;
+    document.getElementById("question-text").textContent = q.q;
+    document.getElementById("progress-fill").style.width = Math.round((state.qIndex / topic.questions.length) * 100) + "%";
+
+    var list = document.getElementById("options-list");
+    list.innerHTML = "";
+    q.options.forEach(function (optText, i) {
+      var b = document.createElement("button");
+      b.className = "option-btn";
+      b.textContent = optText;
+      b.addEventListener("click", function () { selectOption(i, b); });
+      list.appendChild(b);
+    });
+
+    hideBanner();
+  }
+
+  function selectOption(index, btnEl) {
+    if (state.answered) return;
+    state.answered = true;
+
+    var topic = getTopic();
+    var q = topic.questions[state.qIndex];
+    var allBtns = document.querySelectorAll("#options-list .option-btn");
+    var isCorrect = index === q.correct;
+
+    allBtns.forEach(function (b, i) {
+      b.disabled = true;
+      if (i === q.correct) b.classList.add("correct");
+      else if (i === index) b.classList.add("wrong");
+    });
+
+    if (isCorrect) state.correctCount++;
+
+    showBanner(isCorrect, q.explanation);
+  }
+
+  function showBanner(isCorrect, text) {
+    var banner = document.getElementById("feedback-banner");
+    var title = document.getElementById("feedback-title");
+    var textEl = document.getElementById("feedback-text");
+    var nextBtn = document.getElementById("btn-next");
+
+    banner.className = "feedback-banner show" + (isCorrect ? "" : " wrong");
+    title.innerHTML = isCorrect
+      ? '<svg viewBox="0 0 24 24" fill="none" stroke="var(--green)" stroke-width="2.6"><path d="M20 6L9 17l-5-5"/></svg> Ameaça neutralizada!'
+      : '<svg viewBox="0 0 24 24" fill="none" stroke="var(--red)" stroke-width="2.4"><path d="M6 6l12 12M18 6L6 18"/></svg> Você caiu no golpe!';
+    textEl.textContent = text;
+    nextBtn.className = "btn" + (isCorrect ? "" : " danger");
+    nextBtn.textContent = "Continuar";
+  }
+
+  function hideBanner() {
+    document.getElementById("feedback-banner").className = "feedback-banner";
+  }
+
+  function nextQuestion() {
+    if (!state.answered) return;
+    var topic = getTopic();
+    if (state.qIndex < topic.questions.length - 1) {
+      state.qIndex++;
+      renderQuestion();
+    } else {
+      finishTopic();
+    }
+  }
+
+  function finishTopic() {
+    var topic = getTopic();
+    var total = topic.questions.length;
+    var score = state.correctCount;
+    var xp = score * XP_PER_CORRECT;
+
+    progress[topic.id] = { score: score, done: true };
+    saveProgress();
+
+    var pct = score / total;
+    var title, msg;
+    if (pct === 1) { title = "Missão perfeita"; msg = "Você neutralizou todas as ameaças de " + topic.desc.toLowerCase() + ". Continue vigilante no dia a dia."; }
+    else if (pct >= 0.5) { title = "Missão cumprida"; msg = "Você já identifica boa parte dos sinais de ataque. Vale revisar as explicações das respostas erradas."; }
+    else { title = "Missão iniciada"; msg = "Esse é só o primeiro contato com o tema. Reveja as explicações e tente novamente para reforçar o treinamento."; }
+
+    document.getElementById("result-title").textContent = title;
+    document.getElementById("result-xp").textContent = xp;
+    document.getElementById("result-score").textContent = score;
+    document.getElementById("result-total").textContent = total;
+    document.getElementById("result-msg").textContent = msg;
+
+    hideBanner();
+    showView("result");
+  }
+
+  function showView(name) {
+    document.getElementById("view-home").classList.toggle("hide", name !== "home");
+    document.getElementById("view-briefing").classList.toggle("show", name === "briefing");
+    document.getElementById("view-quiz").classList.toggle("show", name === "quiz");
+    document.getElementById("view-result").classList.toggle("show", name === "result");
+    if (name !== "briefing" && storyState.timer) { clearTimeout(storyState.timer); storyState.timer = null; }
+    if (name !== "quiz") hideBanner();
+    window.scrollTo(0, 0);
+  }
+
+  document.getElementById("btn-next").addEventListener("click", nextQuestion);
+  document.getElementById("btn-briefing-back").addEventListener("click", function () { showView("home"); renderHome(); });
+  document.getElementById("btn-close").addEventListener("click", function () { showView("home"); renderHome(); });
+  document.getElementById("btn-home").addEventListener("click", function () { showView("home"); renderHome(); });
+  document.getElementById("btn-retry").addEventListener("click", function () { startTopic(state.topicId); });
+  document.getElementById("btn-reset").addEventListener("click", function () {
+    var btn = this;
+    if (btn.dataset.armed === "1") {
+      progress = {};
+      saveProgress();
+      renderHome();
+      btn.dataset.armed = "0";
+      btn.textContent = "Resetar progresso";
+    } else {
+      btn.dataset.armed = "1";
+      btn.textContent = "Toque de novo para confirmar";
+      setTimeout(function () {
+        if (btn.dataset.armed === "1") {
+          btn.dataset.armed = "0";
+          btn.textContent = "Resetar progresso";
+        }
+      }, 4000);
+    }
+  });
+
+  showView("home");
+  renderHome();
+})();
+</script>
+</body>
+</html>
