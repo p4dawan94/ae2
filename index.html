@@ -27,7 +27,27 @@
     --gold: #FFC94A;
     --red: #FF4D6A; --red-dark: #C43050; --red-pale: rgba(255,77,106,0.12);
 
+    --blue: #3DA9FC; --blue-dark: #1E7FD1; --blue-pale: rgba(61,169,252,0.12);
+    --orange: #FF8A3D; --orange-dark: #D9661C; --orange-pale: rgba(255,138,61,0.12);
+    --teal: #14B8A6; --teal-dark: #0D8C7E; --teal-pale: rgba(20,184,166,0.12);
+    --indigo: #6C63FF; --indigo-dark: #4A42C4; --indigo-pale: rgba(108,99,255,0.12);
+
+    --scanline: rgba(255,255,255,0.015);
+    --banner-bg: #0D1420;
+
     --radius: 14px;
+  }
+
+  :root[data-theme="light"] {
+    --bg: #F3F5FA;
+    --surface: #FFFFFF;
+    --surface-2: #ECEFF6;
+    --border: #D8DEEA;
+    --border-soft: #E4E8F0;
+    --text: #171B2B;
+    --muted: #5B6479;
+    --scanline: rgba(0,0,0,0.025);
+    --banner-bg: #FFFFFF;
   }
 
   * { box-sizing: border-box; }
@@ -36,7 +56,7 @@
     margin: 0;
     background: var(--bg);
     background-image:
-      repeating-linear-gradient(0deg, rgba(255,255,255,0.015) 0px, rgba(255,255,255,0.015) 1px, transparent 1px, transparent 3px);
+      repeating-linear-gradient(0deg, var(--scanline) 0px, var(--scanline) 1px, transparent 1px, transparent 3px);
     color: var(--text);
     font-family: "Inter", -apple-system, BlinkMacSystemFont, sans-serif;
     line-height: 1.5;
@@ -467,7 +487,7 @@
   /* ---------- Bottom feedback banner ---------- */
   .feedback-banner {
     position: fixed; left: 0; right: 0; bottom: -280px;
-    background: #0D1420;
+    background: var(--banner-bg);
     border-top: 1.5px solid var(--green);
     box-shadow: 0 -8px 30px rgba(76,255,107,0.08);
     padding: 18px 20px calc(18px + env(safe-area-inset-bottom, 0px));
@@ -515,10 +535,114 @@
   .result-actions { display: flex; flex-direction: column; gap: 12px; }
 
   .hidden { display: none !important; }
+
+  /* ---------- Theme toggle ---------- */
+  .top-bar { display: flex; justify-content: flex-end; align-items: center; gap: 8px; margin-bottom: 10px; }
+
+  .login-btn {
+    height: 40px;
+    padding: 0 14px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    color: var(--text);
+    font-family: "Rajdhani", sans-serif;
+    font-weight: 700;
+    font-size: 15px;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: border-color 0.15s ease;
+  }
+  .login-btn:hover { border-color: var(--cyan); }
+
+  .auth-note {
+    font-size: 13px;
+    color: var(--muted);
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 10px 12px;
+    margin: 0 0 14px;
+  }
+
+  .theme-toggle {
+    width: 40px; height: 40px;
+    display: flex; align-items: center; justify-content: center;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    color: var(--muted);
+    cursor: pointer;
+    transition: border-color 0.15s ease, color 0.15s ease;
+  }
+  .theme-toggle svg { width: 20px; height: 20px; }
+  .theme-toggle:hover { border-color: var(--cyan); color: var(--text); }
+  /* ---------- Conscientização: "Você sabia?" e glossário ---------- */
+  .learn-grid { display: grid; grid-template-columns: 1fr; gap: 12px; }
+
+  .fact-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 18px;
+  }
+
+  .fact-num {
+    font-family: "Orbitron", sans-serif;
+    font-weight: 800;
+    font-size: 22px;
+    color: var(--cyan);
+    margin: 0 0 6px;
+  }
+
+  .fact-card p { margin: 0; font-size: 14px; color: var(--muted); }
+
+  .glossary {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 10px 24px;
+    margin: 0;
+  }
+
+  .glossary div {
+    background: var(--surface);
+    border: 1px solid var(--border-soft);
+    border-radius: 10px;
+    padding: 12px 14px;
+  }
+
+  .glossary dt { font-weight: 700; color: var(--text); margin: 0 0 2px; }
+  .glossary dd { margin: 0; font-size: 13px; color: var(--muted); }
+
+  /* ---------- Desktop: usa a tela inteira ---------- */
+  @media (min-width: 900px) {
+    .wrap { max-width: 1180px; padding: 32px 40px 90px; }
+    header.intro h1 { font-size: 30px; }
+    header.intro p { font-size: 16px; }
+    .mission-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; }
+    .mission-title { font-size: 18px; }
+    .learn-grid { grid-template-columns: repeat(2, 1fr); }
+    .glossary { grid-template-columns: repeat(2, 1fr); }
+    #view-briefing, #view-quiz, #view-result { max-width: 720px; margin: 0 auto; }
+    .feedback-inner { max-width: 720px; }
+    .story-stage { min-height: 380px; }
+  }
+
+  @media (min-width: 1200px) {
+    .learn-grid { grid-template-columns: repeat(3, 1fr); }
+    .glossary { grid-template-columns: repeat(4, 1fr); }
+  }
 </style>
 </head>
 <body>
 <div class="wrap">
+
+  <div class="top-bar">
+    <button class="login-btn" id="btn-login" type="button">Entrar</button>
+    <button class="theme-toggle" id="theme-toggle" aria-label="Alternar tema"></button>
+  </div>
+  <p class="auth-note" id="auth-note" hidden>Login em breve. Por enquanto, seu progresso fica salvo neste navegador.</p>
 
   <!-- HOME VIEW -->
   <div id="view-home">
@@ -542,8 +666,48 @@
       <p>Comunidade Àse Ylé Igbo Alaketu · treinamento de ciberdefesa pessoal</p>
     </header>
 
-    <div class="section-label ui">Missões · <span id="missions-done">0</span>/6 concluídas</div>
+    <div class="section-label ui">Missões · <span id="missions-done">0</span>/<span id="missions-total">6</span> concluídas</div>
     <div class="mission-grid" id="mission-grid"></div>
+
+    <div class="section-label ui">Você sabia?</div>
+    <div class="learn-grid">
+      <div class="fact-card">
+        <p class="fact-num">99,9%</p>
+        <p>Segundo a Microsoft, a autenticação em duas etapas bloqueia mais de 99,9% dos ataques de invasão de contas.</p>
+      </div>
+      <div class="fact-card">
+        <p class="fact-num">Segundos</p>
+        <p>Senhas comuns, como "123456" ou o próprio nome, são testadas automaticamente pelos golpistas em segundos.</p>
+      </div>
+      <div class="fact-card">
+        <p class="fact-num">Top 3</p>
+        <p>O phishing está entre os principais caminhos usados em invasões, segundo o relatório DBIR da Verizon.</p>
+      </div>
+      <div class="fact-card">
+        <p class="fact-num">Nunca</p>
+        <p>Bancos não pedem senha completa nem código de confirmação por telefone, WhatsApp ou e-mail.</p>
+      </div>
+      <div class="fact-card">
+        <p class="fact-num">Seu direito</p>
+        <p>A LGPD (Lei 13.709/2018) garante que você pode pedir a exclusão dos seus dados pessoais.</p>
+      </div>
+      <div class="fact-card">
+        <p class="fact-num">Atualize</p>
+        <p>Muitos ataques exploram falhas que já foram corrigidas em atualizações que as vítimas nunca instalaram.</p>
+      </div>
+    </div>
+
+    <div class="section-label ui">Glossário rápido</div>
+    <dl class="glossary">
+      <div><dt>Phishing</dt><dd>Mensagem falsa que imita uma empresa para roubar seus dados.</dd></div>
+      <div><dt>Vishing</dt><dd>Golpe aplicado por ligação telefônica.</dd></div>
+      <div><dt>Engenharia social</dt><dd>Manipulação psicológica para obter informações ou fazer você agir.</dd></div>
+      <div><dt>Malware</dt><dd>Programa malicioso, como vírus, spyware ou ransomware.</dd></div>
+      <div><dt>Autenticação em duas etapas</dt><dd>Um código extra, além da senha, para entrar na conta.</dd></div>
+      <div><dt>Gerenciador de senhas</dt><dd>App que guarda senhas fortes e diferentes para cada conta.</dd></div>
+      <div><dt>VPN</dt><dd>Conexão criptografada que protege seus dados em redes públicas.</dd></div>
+      <div><dt>Pix copia e cola</dt><dd>Código de pagamento que pode ser adulterado. Confira o recebedor antes de pagar.</dd></div>
+    </dl>
 
     <footer class="foot">Nenhum dado pessoal é coletado nesta plataforma.<br><button id="btn-reset" style="background:none;border:none;color:var(--muted);text-decoration:underline;cursor:pointer;font-size:12px;padding:8px 0;font-family:inherit;">Resetar progresso</button></footer>
   </div>
@@ -963,6 +1127,238 @@
           explanation: "Informações como endereço, rotina e dados familiares dão material pra golpistas montarem histórias convincentes contra você ou sua família."
         }
       ]
+    },
+    {
+      id: "wifi",
+      title: "Wi-Fi público e redes seguras",
+      desc: "Redes abertas e armadilhas",
+      color: "blue", code: "07",
+      icon: 'wifi',
+      story: {
+        def: "Redes Wi-Fi públicas e abertas podem ser usadas por golpistas para espiar o que você faz ou criar redes falsas parecidas com a verdadeira.",
+        signs: ["Rede sem senha em local público", "Nome de rede muito parecido com o original (ex: \"Wifi_Shopping_Gratis\")", "Pedido de login ou dados pessoais para \"liberar\" a internet"],
+        protect: "Evite acessar banco ou digitar senhas em Wi-Fi público; prefira os dados móveis ou uma VPN confiável."
+      },
+      questions: [
+        {
+          q: "Você está em um shopping e vê duas redes Wi-Fi parecidas: \"Shopping_Wifi\" e \"Shopping_Wifi_Free\". O que é mais seguro fazer?",
+          options: [
+            "Conectar na que tiver sinal mais forte",
+            "Perguntar a um funcionário do shopping qual é a rede oficial antes de conectar",
+            "Conectar nas duas para garantir internet",
+            "Conectar na que não pede senha"
+          ],
+          correct: 1,
+          explanation: "Golpistas criam redes falsas com nomes parecidos para capturar o que você faz online. Confirmar com alguém do local evita cair numa rede falsa."
+        },
+        {
+          q: "Por que é arriscado acessar o aplicativo do banco em uma rede Wi-Fi pública e aberta?",
+          options: [
+            "Não é arriscado, Wi-Fi público é seguro",
+            "Uma rede aberta pode permitir que outra pessoa veja o que você está enviando",
+            "O aplicativo do banco bloqueia automaticamente redes públicas",
+            "Só é arriscado se a rede tiver senha"
+          ],
+          correct: 1,
+          explanation: "Em redes abertas, sem criptografia própria, é mais fácil para alguém mal-intencionado interceptar dados. Evite operações sensíveis nelas."
+        },
+        {
+          q: "Uma rede Wi-Fi pública pede para você fazer login com e-mail e senha antes de liberar a internet. O que fazer?",
+          options: [
+            "Usar a mesma senha do e-mail pessoal, já que é rápido",
+            "Evitar usar senhas que você reutiliza em outras contas; se possível, usar um e-mail reserva",
+            "Compartilhar os dados sem se preocupar",
+            "Desligar o Wi-Fi e nunca mais usar redes públicas"
+          ],
+          correct: 1,
+          explanation: "Portais de login de redes públicas podem coletar e vazar dados. Evitar reusar senha importante reduz o risco caso a informação seja exposta."
+        },
+        {
+          q: "Qual é uma boa prática ao usar redes Wi-Fi públicas?",
+          options: [
+            "Fazer compras e transferências bancárias normalmente",
+            "Evitar atividades sensíveis e, se possível, usar uma VPN confiável",
+            "Desativar completamente o antivírus para a rede funcionar melhor",
+            "Compartilhar a senha da rede com estranhos ao lado"
+          ],
+          correct: 1,
+          explanation: "Reservar atividades sensíveis (banco, senhas) para redes confiáveis, ou usar uma VPN, protege seus dados em redes públicas."
+        }
+      ]
+    },
+    {
+      id: "qrcode",
+      title: "Golpes com QR Code e Pix",
+      desc: "Códigos falsos e Pix copia e cola",
+      color: "orange", code: "08",
+      icon: 'qrcode',
+      story: {
+        def: "Golpistas trocam QR Codes verdadeiros por falsos, ou enviam códigos Pix \"copia e cola\" adulterados para redirecionar o pagamento para a conta deles.",
+        signs: ["QR Code colado por cima de outro em um totem ou boleto", "Pedido pra pagar algo por Pix fora dos canais oficiais", "Nome do recebedor diferente do esperado ao conferir o Pix"],
+        protect: "Sempre confira o nome do recebedor antes de confirmar o Pix e prefira gerar o QR Code direto no aplicativo oficial."
+      },
+      questions: [
+        {
+          q: "Antes de confirmar um pagamento por Pix via QR Code, qual é o passo mais importante?",
+          options: [
+            "Confirmar sem olhar, para ser rápido",
+            "Conferir o nome do recebedor que aparece na tela de confirmação",
+            "Perguntar ao vendedor o valor em voz alta",
+            "Fechar o aplicativo e abrir de novo"
+          ],
+          correct: 1,
+          explanation: "O nome do recebedor mostrado na confirmação do Pix é a forma mais simples de perceber se o dinheiro vai para a pessoa ou empresa certa."
+        },
+        {
+          q: "Você nota que o QR Code de um boleto ou totem de pagamento parece colado por cima do original. O que isso pode indicar?",
+          options: [
+            "É normal, QR Codes são reimpressos sempre",
+            "Pode ser uma fraude: alguém colou um código falso para redirecionar o pagamento",
+            "Significa que o código está desatualizado",
+            "Não tem problema, basta escanear"
+          ],
+          correct: 1,
+          explanation: "Esse é um golpe físico comum: colar um QR Code falso sobre o verdadeiro em locais públicos ou boletos para desviar o pagamento."
+        },
+        {
+          q: "Alguém te envia um código Pix \"copia e cola\" por mensagem e pede para você pagar com urgência. O que fazer?",
+          options: [
+            "Copiar e pagar imediatamente",
+            "Conferir o nome e os dados do recebedor antes de confirmar, e desconfiar da urgência",
+            "Encaminhar para outra pessoa pagar por você",
+            "Pagar só a metade do valor"
+          ],
+          correct: 1,
+          explanation: "Assim como em outros golpes, a urgência é um sinal de alerta. Conferir os dados do recebedor antes de confirmar evita pagamentos incorretos."
+        },
+        {
+          q: "Qual é a atitude mais segura ao usar QR Codes para pagamento?",
+          options: [
+            "Escanear qualquer QR Code sem conferir a origem",
+            "Preferir gerar o QR Code você mesmo, direto no aplicativo oficial da loja ou banco",
+            "Escanear duas vezes para confirmar",
+            "Compartilhar o QR Code recebido com amigos antes de pagar"
+          ],
+          correct: 1,
+          explanation: "Gerar ou receber o código apenas por canais oficiais reduz bastante o risco de cair em um QR Code adulterado."
+        }
+      ]
+    },
+    {
+      id: "fakenews",
+      title: "Fake news e desinformação",
+      desc: "Notícias falsas e boatos",
+      color: "teal", code: "09",
+      icon: 'news',
+      story: {
+        def: "Fake news são notícias falsas criadas para enganar, assustar ou manipular, e se espalham rápido por grupos de mensagens e redes sociais.",
+        signs: ["Manchete exagerada ou alarmista", "Nenhuma fonte confiável citada", "Pedido explícito para \"compartilhar urgente com todos\""],
+        protect: "Antes de compartilhar, procure a informação em sites de notícias confiáveis ou em serviços de verificação de fatos."
+      },
+      questions: [
+        {
+          q: "Você recebe uma mensagem alarmante em um grupo de família pedindo para \"repassar urgente\". O que fazer antes de compartilhar?",
+          options: [
+            "Repassar na hora, para avisar todo mundo rápido",
+            "Verificar a informação em uma fonte confiável antes de compartilhar",
+            "Repassar só para os familiares mais próximos",
+            "Apagar a mensagem sem falar nada"
+          ],
+          correct: 1,
+          explanation: "Boatos costumam pedir urgência para se espalhar antes que alguém verifique. Checar a fonte evita espalhar desinformação."
+        },
+        {
+          q: "Qual desses é um sinal comum de fake news?",
+          options: [
+            "A notícia cita a fonte oficial com link verificável",
+            "Manchete calma e sem exageros",
+            "Texto alarmista, sem fonte, pedindo para compartilhar com urgência",
+            "A notícia está em um site de jornal conhecido"
+          ],
+          correct: 2,
+          explanation: "Textos alarmistas sem fonte e com pedido de compartilhamento urgente são o padrão clássico de boatos e notícias falsas."
+        },
+        {
+          q: "Qual é uma boa forma de checar se uma notícia é verdadeira?",
+          options: [
+            "Perguntar para quem te enviou se é verdade",
+            "Ver quantas pessoas já compartilharam",
+            "Buscar o mesmo assunto em sites de notícias confiáveis ou de verificação de fatos",
+            "Confiar porque veio de um grupo de confiança"
+          ],
+          correct: 2,
+          explanation: "Sites de notícias sérios e serviços de verificação de fatos ajudam a confirmar se uma informação é real antes de você espalhá-la."
+        },
+        {
+          q: "Por que espalhar fake news pode ser perigoso, além de simplesmente estar errado?",
+          options: [
+            "Não tem perigo nenhum, é só uma informação",
+            "Pode causar pânico, prejudicar pessoas ou ser usado em golpes e manipulações",
+            "Só é perigoso se for sobre política",
+            "Só é perigoso se vier de desconhecidos"
+          ],
+          correct: 1,
+          explanation: "Notícias falsas podem causar pânico real, prejudicar a reputação de pessoas e até servir de isca para golpes."
+        }
+      ]
+    },
+    {
+      id: "malware",
+      title: "Vírus, malware e atualizações",
+      desc: "Proteção do seu celular e computador",
+      color: "indigo", code: "10",
+      icon: 'bug',
+      story: {
+        def: "Malware é um programa malicioso que pode roubar dados, espionar ou travar seu aparelho. Muitas vezes chega por aplicativos falsos ou arquivos desconhecidos.",
+        signs: ["Aplicativo pedindo permissões que não fazem sentido", "Celular ou computador lento ou com propagandas estranhas", "Aviso para baixar um \"aplicativo\" fora das lojas oficiais"],
+        protect: "Baixe aplicativos só das lojas oficiais e mantenha o sistema e os apps sempre atualizados."
+      },
+      questions: [
+        {
+          q: "Você recebe um link para baixar um \"aplicativo\" fora da loja oficial (Play Store/App Store), prometendo uma função incrível. O que fazer?",
+          options: [
+            "Baixar, já que a função parece útil",
+            "Evitar instalar aplicativos fora das lojas oficiais",
+            "Baixar e depois verificar se é seguro",
+            "Enviar o link para um amigo testar primeiro"
+          ],
+          correct: 1,
+          explanation: "Aplicativos fora das lojas oficiais não passam pelas verificações de segurança e são uma via comum de instalação de malware."
+        },
+        {
+          q: "Por que manter o celular e os aplicativos atualizados ajuda na segurança?",
+          options: [
+            "Atualizações só mudam o visual do aplicativo",
+            "Atualizações corrigem falhas de segurança conhecidas que podem ser exploradas por golpistas",
+            "Não tem relação com segurança",
+            "Atualizações deixam o aparelho mais lento, então é melhor evitar"
+          ],
+          correct: 1,
+          explanation: "Boa parte das atualizações existe justamente para corrigir brechas de segurança descobertas. Não atualizar deixa essas portas abertas."
+        },
+        {
+          q: "Um aplicativo de lanterna pede permissão para acessar seus contatos e mensagens. O que esse pedido pode indicar?",
+          options: [
+            "É normal, todo aplicativo pede essas permissões",
+            "Pode ser um sinal de alerta: a permissão não faz sentido para a função do app",
+            "Significa que o app é mais completo",
+            "Não tem nenhum risco em aceitar"
+          ],
+          correct: 1,
+          explanation: "Permissões que não têm relação com a função do aplicativo são um sinal de que ele pode estar coletando dados indevidamente."
+        },
+        {
+          q: "Qual atitude ajuda a manter seu celular ou computador protegido contra malware?",
+          options: [
+            "Clicar em qualquer anexo recebido por e-mail",
+            "Instalar apps só de lojas oficiais e manter tudo atualizado",
+            "Desativar todas as atualizações automáticas",
+            "Compartilhar seu aparelho com qualquer pessoa sem senha"
+          ],
+          correct: 1,
+          explanation: "Lojas oficiais e atualizações constantes são as principais barreiras de proteção contra programas maliciosos."
+        }
+      ]
     }
   ];
   var ICONS = {
@@ -973,7 +1369,13 @@
     lock: '<rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V7a4 4 0 018 0v4"/>',
     eye: '<path d="M2 12s3.7-7 10-7 10 7 10 7-3.7 7-10 7-10-7-10-7z"/><circle cx="12" cy="12" r="3"/>',
     warning: '<path d="M12 3.5l9.5 16.5H2.5z"/><path d="M12 9.5v5"/><circle cx="12" cy="17.3" r="0.9" fill="currentColor" stroke="none"/>',
-    shieldCheck: '<path d="M12 2l8 4v6c0 5-3.5 8.5-8 10-4.5-1.5-8-5-8-10V6l8-4z"/><path d="M9 12l2 2 4-4"/>'
+    shieldCheck: '<path d="M12 2l8 4v6c0 5-3.5 8.5-8 10-4.5-1.5-8-5-8-10V6l8-4z"/><path d="M9 12l2 2 4-4"/>',
+    wifi: '<path d="M2 8.5c5.5-5 14.5-5 20 0"/><path d="M5.5 12.3c3.5-3 9.5-3 13 0"/><path d="M9 16c1.5-1.3 4.5-1.3 6 0"/><circle cx="12" cy="19.3" r="1" fill="currentColor" stroke="none"/>',
+    qrcode: '<rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="3" height="3"/><rect x="19" y="14" width="2" height="2"/><rect x="14" y="19" width="2" height="2"/><rect x="19" y="19" width="2" height="2"/>',
+    news: '<path d="M4 4h13a2 2 0 012 2v13a1 1 0 01-1 1H6a2 2 0 01-2-2z"/><path d="M4 4v14a2 2 0 002 2"/><path d="M8 8h7M8 12h7M8 16h4"/>',
+    bug: '<path d="M9 9V7a3 3 0 016 0v2"/><rect x="6" y="9" width="12" height="10" rx="5"/><path d="M6 13H3M21 13h-3M6 17l-2 2M18 17l2 2M12 9v10"/>',
+    sun: '<circle cx="12" cy="12" r="4"/><path d="M12 2v3M12 19v3M4.2 4.2l2.1 2.1M17.7 17.7l2.1 2.1M2 12h3M19 12h3M4.2 19.8l2.1-2.1M17.7 6.3l2.1-2.1"/>',
+    moon: '<path d="M21 12.5A9 9 0 1111.5 3a7 7 0 009.5 9.5z"/>'
   };
 
   function svgIcon(name, color) {
@@ -986,32 +1388,46 @@
     amber:   { c: "var(--amber)",   dark: "var(--amber-dark)",   pale: "var(--amber-pale)" },
     green:   { c: "var(--green)",   dark: "var(--green-dark)",   pale: "var(--green-pale)" },
     violet:  { c: "var(--violet)",  dark: "var(--violet-dark)",  pale: "var(--violet-pale)" },
-    rose:    { c: "var(--rose)",    dark: "var(--rose-dark)",    pale: "var(--rose-pale)" }
+    rose:    { c: "var(--rose)",    dark: "var(--rose-dark)",    pale: "var(--rose-pale)" },
+    blue:    { c: "var(--blue)",    dark: "var(--blue-dark)",    pale: "var(--blue-pale)" },
+    orange:  { c: "var(--orange)",  dark: "var(--orange-dark)",  pale: "var(--orange-pale)" },
+    teal:    { c: "var(--teal)",    dark: "var(--teal-dark)",    pale: "var(--teal-pale)" },
+    indigo:  { c: "var(--indigo)",  dark: "var(--indigo-dark)",  pale: "var(--indigo-pale)" }
   };
 
   var RANK_RULES = [
     { name: "Curioso Digital", test: function () { return true; } },
     { name: "Abian Digital", test: function (s) { return s.doneCount >= 1; } },
-    { name: "Iyawo Digital", test: function (s) { return s.doneCount >= 3 && s.accuracy >= 0.5; } },
-    { name: "Egbon Digital", test: function (s) { return s.doneCount >= 6 && s.accuracy >= 0.75; } }
+    { name: "Iyawo Digital", test: function (s) { return s.doneCount >= Math.ceil(TOPICS.length / 2) && s.accuracy >= 0.5; } },
+    { name: "Egbon Digital", test: function (s) { return s.doneCount >= TOPICS.length && s.accuracy >= 0.75; } }
   ];
 
   var XP_PER_CORRECT = 10;
 
   var state = { topicId: null, qIndex: 0, correctCount: 0, answered: false };
-  var progress = loadProgress();
 
-  function loadProgress() {
-    try {
-      var raw = localStorage.getItem("rangers_digitais_progress");
-      return raw ? JSON.parse(raw) : {};
-    } catch (e) { return {}; }
-  }
+  // Camada de armazenamento do progresso. Hoje usa o navegador (localStorage);
+  // quando houver login, basta trocar este objeto por um que salve no servidor.
+  var progressStore = {
+    load: function () {
+      try {
+        var raw = localStorage.getItem("rangers_digitais_progress");
+        return raw ? JSON.parse(raw) : {};
+      } catch (e) { return {}; }
+    },
+    save: function (data) {
+      try { localStorage.setItem("rangers_digitais_progress", JSON.stringify(data)); }
+      catch (e) { /* ignore */ }
+    },
+    clear: function () {
+      try { localStorage.removeItem("rangers_digitais_progress"); }
+      catch (e) { /* ignore */ }
+    }
+  };
 
-  function saveProgress() {
-    try { localStorage.setItem("rangers_digitais_progress", JSON.stringify(progress)); }
-    catch (e) { /* ignore */ }
-  }
+  var progress = progressStore.load();
+
+  function saveProgress() { progressStore.save(progress); }
 
   function totalScore() {
     var total = 0;
@@ -1042,12 +1458,13 @@
   }
 
   function nextRankHint(s) {
+    var half = Math.ceil(TOPICS.length / 2);
     if (s.doneCount < 1) return "Complete a 1ª missão para virar Abian Digital";
-    if (!(s.doneCount >= 3 && s.accuracy >= 0.5)) {
-      return "Complete 3 missões com 50%+ de acerto para virar Iyawo Digital";
+    if (!(s.doneCount >= half && s.accuracy >= 0.5)) {
+      return "Complete " + half + " missões com 50%+ de acerto para virar Iyawo Digital";
     }
-    if (!(s.doneCount >= 6 && s.accuracy >= 0.75)) {
-      return "Complete as 6 missões com 75%+ de acerto para virar Egbon Digital";
+    if (!(s.doneCount >= TOPICS.length && s.accuracy >= 0.75)) {
+      return "Complete as " + TOPICS.length + " missões com 75%+ de acerto para virar Egbon Digital";
     }
     return "Patente máxima alcançada";
   }
@@ -1058,8 +1475,9 @@
     document.getElementById("total-score").textContent = xp;
     document.getElementById("rank-name").textContent = currentRankName(s);
     document.getElementById("missions-done").textContent = s.doneCount;
+    document.getElementById("missions-total").textContent = TOPICS.length;
 
-    var pct = Math.min(100, Math.round((s.doneCount / 6) * 100));
+    var pct = Math.min(100, Math.round((s.doneCount / TOPICS.length) * 100));
     document.getElementById("xp-fill").style.width = pct + "%";
     document.getElementById("rank-next").textContent = nextRankHint(s);
   }
@@ -1322,7 +1740,7 @@
     var btn = this;
     if (btn.dataset.armed === "1") {
       progress = {};
-      saveProgress();
+      progressStore.clear();
       renderHome();
       btn.dataset.armed = "0";
       btn.textContent = "Resetar progresso";
@@ -1336,6 +1754,37 @@
         }
       }, 4000);
     }
+  });
+
+  function loadTheme() {
+    try {
+      var saved = localStorage.getItem("rangers_digitais_theme");
+      if (saved === "light" || saved === "dark") return saved;
+    } catch (e) { /* ignore */ }
+    return (window.matchMedia && window.matchMedia("(prefers-color-scheme: light)").matches) ? "light" : "dark";
+  }
+
+  function applyTheme(theme) {
+    document.documentElement.setAttribute("data-theme", theme);
+    var btn = document.getElementById("theme-toggle");
+    btn.innerHTML = svgIcon(theme === "light" ? "moon" : "sun", "currentColor");
+    btn.setAttribute("aria-label", theme === "light" ? "Mudar para modo escuro" : "Mudar para modo claro");
+  }
+
+  var currentTheme = loadTheme();
+  applyTheme(currentTheme);
+
+  // Placeholder da entrada: ainda não há contas. Quando houver login, este
+  // clique passa a abrir o formulário de entrada/cadastro.
+  document.getElementById("btn-login").addEventListener("click", function () {
+    var note = document.getElementById("auth-note");
+    note.hidden = !note.hidden;
+  });
+
+  document.getElementById("theme-toggle").addEventListener("click", function () {
+    currentTheme = currentTheme === "light" ? "dark" : "light";
+    applyTheme(currentTheme);
+    try { localStorage.setItem("rangers_digitais_theme", currentTheme); } catch (e) { /* ignore */ }
   });
 
   showView("home");
